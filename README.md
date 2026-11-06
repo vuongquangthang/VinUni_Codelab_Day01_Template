@@ -30,7 +30,7 @@
      source .venv/bin/activate
      ```
 
-3. **Cài đặt thư viện từ [requirements.txt](file:///j:/VinUniCodelab/VinUni_Codelab_Day01/requirements.txt):**
+3. **Cài đặt thư viện từ [requirements.txt](requirements.txt):**
    ```bash
    pip install -r requirements.txt
    ```
@@ -85,6 +85,27 @@ Bạn có thể thiết lập biến môi trường trực tiếp từ terminal 
 ---
 
 ## 🚀 2. Lộ trình triển khai (Recommended Flow)
+
+Bản hoàn thiện nằm tại [`starter-code/template.py`](starter-code/template.py) và
+[`solution-code/solution.py`](solution-code/solution.py), bao gồm Task 1–5 và Bonus A–C.
+Hai file giữ nguyên chữ ký hàm; bộ test ưu tiên bản trong `solution-code`.
+
+Chạy kiểm thử từ thư mục gốc (API được mock, không cần API key):
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest tests/ -v
+```
+
+Chạy so sánh model và chatbot với API thật:
+
+```powershell
+.\.venv\Scripts\python.exe solution-code/solution.py
+```
+
+So sánh cần `OPENAI_API_KEY` và `GEMINI_API_KEY`; hàm `call_anthropic` cần thêm
+`ANTHROPIC_API_KEY`. File `.env` ở thư mục gốc được nạp tự động.
+Chi phí được ước tính theo bảng `PRICING_1M_TOKENS` của đề bài, không phải bảng giá
+hiện hành. Chatbot giữ ba lượt user/model hoàn chỉnh gần nhất và gửi kèm câu hỏi mới.
 
 Để hoàn thành bài lab một cách khoa học, hãy đi theo trình tự sau:
 
