@@ -20,6 +20,7 @@ load_dotenv()
 # Vietnamese text generally consumes ~1.5x - 2.0x more tokens than English due to Unicode/diacritics.
 # ---------------------------------------------------------------------------
 PRICING_1M_TOKENS = {
+    "gemini-3.8-flash": {"input": 0.075, "output": 0.300},
     "gpt-4o": {"input": 5.00, "output": 20.00},
     "gpt-4o-mini": {"input": 0.150, "output": 0.600},
     "gemini-2.5-flash": {"input": 0.075, "output": 0.300},
@@ -31,7 +32,7 @@ PRICING_1M_TOKENS = {
 # Standard Model Identifiers
 OPENAI_MODEL = "gpt-4o"
 OPENAI_MINI_MODEL = "gpt-4o-mini"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
 ANTHROPIC_MODEL = "claude-3-5-haiku"
 
 
@@ -87,7 +88,7 @@ def call_openai(
 
 
 # ---------------------------------------------------------------------------
-# Task 2 — Call Google Gemini 2.5 (Standard Practical Model)
+# Task 2 — Call Google Gemini (Standard Practical Model)
 # ---------------------------------------------------------------------------
 def call_gemini(
     prompt: str,
@@ -97,12 +98,12 @@ def call_gemini(
     max_tokens: int = 256,
 ) -> tuple[str, float, dict]:
     """
-    Call the Google Gemini API (using Gemini 2.5 Flash as standard) and return
+    Call the Google Gemini API (using Gemini 3.8 Flash as standard) and return
     the response text, latency, and token usage stats.
 
     Args:
         prompt:      The user message to send.
-        model:       The Gemini model to use (default: gemini-2.5-flash).
+        model:       The Gemini model to use (default: gemini-3.8-flash).
         temperature: Sampling temperature.
         top_p:       Nucleus sampling threshold.
         max_tokens:  Maximum number of tokens to generate.
@@ -208,11 +209,11 @@ def call_anthropic(
 
 
 # ---------------------------------------------------------------------------
-# Task 4 — Compare Models (OpenAI GPT-4o vs OpenAI Mini vs Gemini 2.5 Flash)
+# Task 4 — Compare Models (OpenAI GPT-4o vs OpenAI Mini vs Gemini Flash)
 # ---------------------------------------------------------------------------
 def compare_models(prompt: str) -> dict:
     """
-    Call OpenAI (gpt-4o), OpenAI Mini (gpt-4o-mini), and Gemini 2.5 Flash (gemini-2.5-flash)
+    Call OpenAI (gpt-4o), OpenAI Mini (gpt-4o-mini), and Gemini Flash
     with the same prompt and return a structured comparison dictionary.
 
     Calculate the exact USD token cost for input + output using the prices in PRICING_1M_TOKENS.
@@ -253,14 +254,14 @@ def compare_models(prompt: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Task 5 — Streaming chatbot with Gemini 2.5 (Focus Model)
+# Task 5 — Streaming chatbot with Gemini (Focus Model)
 # ---------------------------------------------------------------------------
 def streaming_chatbot() -> None:
     """
-    Run an interactive streaming chatbot in the terminal using Gemini 2.5.
+    Run an interactive streaming chatbot in the terminal using Gemini.
 
     Behaviour:
-        - Streams response tokens from Gemini 2.5 Flash as they arrive.
+        - Streams response tokens from the configured Gemini model as they arrive.
         - Maintains the last 3 turns of conversation history for context.
         - Typing 'quit' or 'exit' ends the session.
 
@@ -424,7 +425,7 @@ if __name__ == "__main__":
         print(f"Skipping live API comparison test: {e}")
         print("Set your API keys to run manual tests.")
 
-    print("\n=== Starting Gemini 2.5 Chatbot (type 'quit' to exit) ===")
+    print(f"\n=== Starting {GEMINI_MODEL} Chatbot (type 'quit' to exit) ===")
     try:
         streaming_chatbot()
     except Exception as e:

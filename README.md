@@ -65,6 +65,8 @@ Bạn có thể thiết lập biến môi trường trực tiếp từ terminal 
   ```powershell
   $env:OPENAI_API_KEY="sk-proj-your-openai-key-here"
   $env:GEMINI_API_KEY="AIzaSy-your-gemini-key-here"
+  # Optional: override the default Gemini model
+  $env:GEMINI_MODEL="gemini-3.8-flash"
   ```
 
 * **Windows (CMD):**
@@ -143,7 +145,7 @@ hiện hành. Chatbot giữ ba lượt user/model hoàn chỉnh gần nhất và
 
 ---
 
-### 🔹 Task 2: `call_gemini` (Google Gemini 2.5) — Trọng tâm chính!
+### 🔹 Task 2: `call_gemini` (Google Gemini) — Trọng tâm chính!
 Chúng ta sẽ sử dụng SDK mới nhất của Google (`google-genai`):
 * **SDK cần dùng:** `from google import genai` và `from google.genai import types`
 * **Cách khởi tạo:** `client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))`
@@ -174,7 +176,7 @@ Streaming giúp tạo trải nghiệm người dùng mượt mà giống như Ch
 * **Streaming logic:**
   ```python
   response_stream = client.models.generate_content_stream(
-      model="gemini-2.5-flash",
+      model="gemini-3.8-flash",
       contents=formatted_history
   )
   for chunk in response_stream:
